@@ -1,3 +1,5 @@
+import org.gradle.internal.os.OperatingSystem
+
 plugins {
     id 'java'
     id 'application'
@@ -6,10 +8,10 @@ plugins {
 group 'br.com.camila'
 version '0.0.1'
 
-def lwjglVersion = "3.2.3"
-def jomlVersion = "1.10.1"
-def guacamoleVersion = "0.3.1"
-def lwjglNatives = "natives-macos"
+// The game will support only Windows x64 and MacOS
+def lwjglNatives = OperatingSystem.current().isMacOsX()
+        ? "natives-macos"
+        : "natives-windows"
 
 repositories {
     mavenCentral()
@@ -17,28 +19,30 @@ repositories {
 }
 
 dependencies {
+    implementation platform("org.lwjgl:lwjgl-bom:3.2.3")
 
-    implementation platform("org.lwjgl:lwjgl-bom:$lwjglVersion")
-
+    // LightWeight Java Game Library
     implementation "org.lwjgl:lwjgl"
-    implementation "org.lwjgl:lwjgl-assimp"
-    implementation "org.lwjgl:lwjgl-glfw"
-    implementation "org.lwjgl:lwjgl-openal"
-    implementation "org.lwjgl:lwjgl-opengl"
-    implementation "org.lwjgl:lwjgl-stb"
     runtimeOnly "org.lwjgl:lwjgl::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-assimp::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-openal::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
-    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
-    implementation "org.joml:joml:$jomlVersion"
 
-    implementation "com.github.crykn.guacamole:gdx-desktop:$guacamoleVersion"
+    // OpenGL native bind for Java
+    implementation "org.lwjgl:lwjgl-opengl"
+    runtimeOnly "org.lwjgl:lwjgl-opengl::$lwjglNatives"
+
+    // Manage window and inputs
+    implementation "org.lwjgl:lwjgl-glfw"
+    runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
+
+    // Asset loading utils
+    implementation "org.lwjgl:lwjgl-stb"
+    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
+
+    // Java OpenGL Math Library
+    implementation 'org.joml:joml:1.10.2'
 }
 
 test {
     useJUnitPlatform()
 }
 
-mainClassName = 'Application'
+mainClassName = 'br.com.camila.Application'
