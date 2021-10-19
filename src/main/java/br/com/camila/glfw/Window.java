@@ -14,15 +14,15 @@ import static org.lwjgl.system.MemoryUtil.NULL;
 public class Window {
     private static Window INSTANCE = null;
     public static Window getInstance() {
-        if (INSTANCE == null) {
-            INSTANCE = new Window();
-        }
+        if (INSTANCE == null) INSTANCE = new Window();
         return INSTANCE;
     }
 
     private static final String TITLE = "Labirinto com Curvas by Camila";
     private static final int DEFAULT_WIDTH = 1024;
     private static final int DEFAULT_HEIGHT = 768;
+
+    private Window() {}
 
     private long glfwWindowAddress;
 
@@ -42,6 +42,8 @@ public class Window {
         glfwMakeContextCurrent(glfwWindowAddress);
         GL.createCapabilities();
         glfwShowWindow(glfwWindowAddress);
+
+        glfwSetKeyCallback(glfwWindowAddress, KeyListener.getInstance());
     }
 
     private void execution() {
@@ -83,7 +85,11 @@ public class Window {
     private void display() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        // TODO: Game
+        if (KeyListener.getInstance().isKeyPressed(GLFW_KEY_SPACE)) {
+            glClearColor(1, 0, 0, 0);
+        } else {
+            glClearColor(0, 0, 0, 0);
+        }
 
         glfwSwapBuffers(glfwWindowAddress);
     }

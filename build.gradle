@@ -15,7 +15,6 @@ def lwjglNatives = OperatingSystem.current().isMacOsX()
 
 repositories {
     mavenCentral()
-    maven { url "https://jitpack.io" }
 }
 
 dependencies {
@@ -33,16 +32,8 @@ dependencies {
     implementation "org.lwjgl:lwjgl-glfw"
     runtimeOnly "org.lwjgl:lwjgl-glfw::$lwjglNatives"
 
-    // Asset loading utils
-    implementation "org.lwjgl:lwjgl-stb"
-    runtimeOnly "org.lwjgl:lwjgl-stb::$lwjglNatives"
-
     // Java OpenGL Math Library
     implementation 'org.joml:joml:1.10.2'
-}
-
-test {
-    useJUnitPlatform()
 }
 
 mainClassName = 'br.com.camila.Application'
