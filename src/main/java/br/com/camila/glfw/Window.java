@@ -1,6 +1,9 @@
 package br.com.camila.glfw;
 
 
+import br.com.camila.game.Global;
+import br.com.camila.game.IGame;
+import br.com.camila.game.World;
 import org.lwjgl.glfw.GLFWErrorCallback;
 import org.lwjgl.opengl.GL;
 
@@ -18,15 +21,12 @@ public class Window {
         return INSTANCE;
     }
 
-    private static final String TITLE = "Labirinto com Curvas by Camila";
-    private static final int DEFAULT_WIDTH = 1024;
-    private static final int DEFAULT_HEIGHT = 768;
-
-    private Window() {}
-
+    private IGame game;
     private long glfwWindowAddress;
 
-    public void run() {
+    public void run(IGame game) {
+        this.game = game;
+
         init();
         execution();
         terminateGracefully();
@@ -44,16 +44,21 @@ public class Window {
         glfwShowWindow(glfwWindowAddress);
 
         glfwSetKeyCallback(glfwWindowAddress, KeyListener.getInstance());
+
+        World.setCoordinatePlane();
+        game.init();
     }
 
     private void execution() {
         while (!glfwWindowShouldClose(glfwWindowAddress)) {
+            game.update();
             display();
             glfwPollEvents();
         }
     }
 
     private void terminateGracefully() {
+        game.terminate();
         glfwFreeCallbacks(glfwWindowAddress);
         glfwDestroyWindow(glfwWindowAddress);
         glfwTerminate();
@@ -68,9 +73,9 @@ public class Window {
         glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
 
         long windowAddress = glfwCreateWindow(
-                DEFAULT_WIDTH,
-                DEFAULT_HEIGHT,
-                TITLE,
+                Global.windowDefaultWidth,
+                Global.windowDefaultHeight,
+                Global.windowTitle,
                 NULL,
                 NULL
         );
@@ -84,13 +89,14 @@ public class Window {
 
     private void display() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
-        if (KeyListener.getInstance().isKeyPressed(GLFW_KEY_SPACE)) {
-            glClearColor(1, 0, 0, 0);
-        } else {
-            glClearColor(0, 0, 0, 0);
-        }
-
+        glClearColor(
+                Global.clearColor.red(),
+                Global.clearColor.green(),
+                Global.clearColor.blue(),
+                Global.clearColor.alpha()
+        );
+        Global.defaultColor.glSet();
+        game.draw();
         glfwSwapBuffers(glfwWindowAddress);
     }
 }
