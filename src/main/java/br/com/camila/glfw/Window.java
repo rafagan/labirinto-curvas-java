@@ -21,6 +21,8 @@ public class Window {
         return INSTANCE;
     }
 
+    private Window() {}
+
     private IGame game;
     private long glfwWindowAddress;
 
@@ -28,7 +30,7 @@ public class Window {
         this.game = game;
 
         init();
-        execution();
+        execute();
         terminateGracefully();
     }
 
@@ -49,7 +51,7 @@ public class Window {
         game.init();
     }
 
-    private void execution() {
+    private void execute() {
         while (!glfwWindowShouldClose(glfwWindowAddress)) {
             game.update();
             display();
