@@ -6,19 +6,19 @@ import org.joml.Vector2f;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Line implements Primitive {
+public class Triangle implements Primitive {
     private Vector2f p1;
     private Vector2f p2;
+    private Vector2f p3;
     private Color color;
-    private boolean stippled = true;
+    private boolean filled;
 
-    public Line() {
+    public Triangle() {}
 
-    }
-
-    public Line(Vector2f p1, Vector2f p2) {
+    public Triangle(Vector2f p1, Vector2f p2, Vector2f p3) {
         this.p1 = p1;
         this.p2 = p2;
+        this.p3 = p3;
     }
 
     public Vector2f getP1() {
@@ -37,6 +37,14 @@ public class Line implements Primitive {
         this.p2 = p2;
     }
 
+    public Vector2f getP3() {
+        return p3;
+    }
+
+    public void setP3(Vector2f p3) {
+        this.p3 = p3;
+    }
+
     public Color getColor() {
         return color;
     }
@@ -45,32 +53,25 @@ public class Line implements Primitive {
         this.color = color;
     }
 
-    public boolean isStippled() {
-        return stippled;
+    public boolean isFilled() {
+        return filled;
     }
 
-    public void setStippled(boolean stippled) {
-        this.stippled = stippled;
+    public void setFilled(boolean filled) {
+        this.filled = filled;
     }
 
     @Override
     public void draw() {
         if(color != null) color.glSet();
 
-        if(stippled) {
-            glPushAttrib(GL_ENABLE_BIT);
-            glLineStipple(10, (short) 0xAAAA);
-            glEnable(GL_LINE_STIPPLE);
-        }
+        glBegin(filled ? GL_TRIANGLES : GL_LINE_LOOP);
 
-        glBegin(GL_LINES);
-        {
-            glVertex2f(p1.x, p1.y);
-            glVertex2f(p2.x, p2.y);
-        }
+        glVertex2f(p1.x, p1.y);
+        glVertex2f(p2.x, p2.y);
+        glVertex2f(p3.x, p3.y);
+
         glEnd();
-
-        if(stippled) glPopAttrib();
         if(color != null) Global.defaultColor.glSet();
     }
 }

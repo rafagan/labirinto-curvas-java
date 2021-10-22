@@ -4,19 +4,17 @@ import br.com.camila.game.Global;
 import br.com.camila.util.Color;
 import org.joml.Vector2d;
 import org.joml.Vector2f;
-import org.lwjgl.opengl.GL11;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Circle {
+public class Circle implements Primitive {
     private Vector2f center;
     private double radius;
     private int resolution = 3000;
     private Color color;
-    private boolean filled = false;
+    private boolean filled;
 
-    public Circle() {
-    }
+    public Circle() {}
 
     public Circle(Vector2f center, double radius) {
         this.center = center;
@@ -63,6 +61,7 @@ public class Circle {
         this.filled = filled;
     }
 
+    @Override
     public void draw() {
         if(color != null) color.glSet();
 
