@@ -40,7 +40,7 @@ public class Bezier4PointsGame implements IGame {
 
     @Override
     public void update() {
-        position.set(bezier.lerp(time += 0.001f));
+        position.set(bezier.lerp(0.5f));
     }
 
     @Override

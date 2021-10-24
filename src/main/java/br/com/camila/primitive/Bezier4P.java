@@ -77,7 +77,7 @@ public class Bezier4P implements IPrimitive {
     public void draw() {
         GL11.glBegin(GL11.GL_LINE_STRIP);
         for(float t = 0f; t < 1f; t += 1f / resolution) {
-            Vector2f p = lerp(t);
+            lerp(t);
             GL11.glVertex2f(p.x, p.y);
         }
         GL11.glEnd();

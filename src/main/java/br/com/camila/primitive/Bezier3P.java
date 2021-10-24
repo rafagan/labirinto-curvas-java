@@ -50,6 +50,8 @@ public class Bezier3P implements IPrimitive {
         this.resolution = resolution;
     }
 
+    // Algoritmo de De Casteljau
+
     public Vector2f lerp(float t) {
         t = MathUtil.clamp(t, 0.0f, 1.0f);
         p1.lerp(p2, t, l1);

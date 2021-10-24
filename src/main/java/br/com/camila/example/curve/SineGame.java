@@ -14,7 +14,7 @@ public class SineGame implements IGame {
 
     float time = 0f;
     Vector2f position = new Vector2f();
-    Curve.CurveFunction func = new Sine(100, World.yFromRatio(0.5f));
+    Curve.CurveFunction func = new Sine(200, World.yFromRatio(0.5f));
 
     @Override
     public void init() {
