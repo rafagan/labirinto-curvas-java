@@ -1,5 +1,5 @@
 package br.com.camila.primitive;
 
-public interface Primitive {
+public interface IPrimitive {
     void draw();
 }

@@ -1,16 +1,16 @@
 package br.com.camila.primitive;
 
 import br.com.camila.game.Global;
-import br.com.camila.util.Color;
+import br.com.camila.util.GlColor;
 import org.joml.Vector2f;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Line implements Primitive {
+public class Line implements IPrimitive {
     private Vector2f p1;
     private Vector2f p2;
-    private Color color;
-    private boolean stippled = true;
+    private GlColor color;
+    private boolean stippled;
 
     public Line() {
 
@@ -37,11 +37,11 @@ public class Line implements Primitive {
         this.p2 = p2;
     }
 
-    public Color getColor() {
+    public GlColor getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(GlColor color) {
         this.color = color;
     }
 

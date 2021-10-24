@@ -1,17 +1,17 @@
 package br.com.camila.primitive;
 
 import br.com.camila.game.Global;
-import br.com.camila.util.Color;
+import br.com.camila.util.GlColor;
 import org.joml.Vector2d;
 import org.joml.Vector2f;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Circle implements Primitive {
+public class Circle implements IPrimitive {
     private Vector2f center;
     private double radius;
     private int resolution = 3000;
-    private Color color;
+    private GlColor color;
     private boolean filled;
 
     public Circle() {}
@@ -37,11 +37,11 @@ public class Circle implements Primitive {
         this.radius = radius;
     }
 
-    public Color getColor() {
+    public GlColor getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(GlColor color) {
         this.color = color;
     }
 

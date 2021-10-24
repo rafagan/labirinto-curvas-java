@@ -1,16 +1,16 @@
 package br.com.camila.primitive;
 
 import br.com.camila.game.Global;
-import br.com.camila.util.Color;
+import br.com.camila.util.GlColor;
 import org.joml.Vector2f;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Triangle implements Primitive {
+public class Triangle implements IPrimitive {
     private Vector2f p1;
     private Vector2f p2;
     private Vector2f p3;
-    private Color color;
+    private GlColor color;
     private boolean filled;
 
     public Triangle() {}
@@ -45,11 +45,11 @@ public class Triangle implements Primitive {
         this.p3 = p3;
     }
 
-    public Color getColor() {
+    public GlColor getColor() {
         return color;
     }
 
-    public void setColor(Color color) {
+    public void setColor(GlColor color) {
         this.color = color;
     }
 

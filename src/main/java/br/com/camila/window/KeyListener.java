@@ -1,4 +1,4 @@
-package br.com.camila.glfw;
+package br.com.camila.window;
 
 
 import org.lwjgl.glfw.GLFWKeyCallbackI;

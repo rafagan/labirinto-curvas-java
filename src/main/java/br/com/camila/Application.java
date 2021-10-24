@@ -1,7 +1,7 @@
 package br.com.camila;
 
 import br.com.camila.example.primitive.PrimitiveGame;
-import br.com.camila.glfw.Window;
+import br.com.camila.window.Window;
 
 
 public class Application {

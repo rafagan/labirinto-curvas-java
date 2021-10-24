@@ -1,4 +1,4 @@
-package br.com.camila.glfw;
+package br.com.camila.window;
 
 
 import br.com.camila.game.Global;

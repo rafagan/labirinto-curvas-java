@@ -5,7 +5,7 @@ import br.com.camila.game.World;
 import br.com.camila.primitive.Circle;
 import br.com.camila.primitive.Line;
 import br.com.camila.primitive.Triangle;
-import br.com.camila.util.Color;
+import br.com.camila.util.GlColor;
 import org.joml.Vector2f;
 
 
@@ -20,6 +20,7 @@ public class PrimitiveGame implements IGame {
                 new Vector2f(World.xFromRatio(0.4f), World.yFromRatio(0.4f)),
                 new Vector2f(World.xFromRatio(0.6f), World.yFromRatio(0.6f))
         );
+        line1.setStippled(true);
 
         line2 = new Line(
                 new Vector2f(World.xFromRatio(0.6f), World.yFromRatio(0.4f)),
@@ -30,7 +31,7 @@ public class PrimitiveGame implements IGame {
                 new Vector2f(World.xFromRatio(0.5f), World.yFromRatio(0.5f)),
                 100
         );
-        circle.setColor(new Color(java.awt.Color.RED));
+        circle.setColor(new GlColor(java.awt.Color.RED));
 
         triangle = new Triangle(
                 new Vector2f(World.xFromRatio(0.5f), World.yFromRatio(0.8f)),
@@ -51,9 +52,9 @@ public class PrimitiveGame implements IGame {
 
     @Override
     public void draw() {
-        circle.draw();
+//        circle.draw();
         line1.draw();
         line2.draw();
-        triangle.draw();
+//        triangle.draw();
     }
 }

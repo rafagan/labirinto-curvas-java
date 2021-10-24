@@ -1,7 +1,7 @@
 package br.com.camila.example.blink;
 
 import br.com.camila.game.IGame;
-import br.com.camila.glfw.KeyListener;
+import br.com.camila.window.KeyListener;
 
 import static org.lwjgl.glfw.GLFW.GLFW_KEY_SPACE;
 import static org.lwjgl.opengl.GL11.glClearColor;
