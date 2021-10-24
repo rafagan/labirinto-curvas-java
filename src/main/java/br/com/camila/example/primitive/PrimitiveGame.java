@@ -52,9 +52,9 @@ public class PrimitiveGame implements IGame {
 
     @Override
     public void draw() {
-//        circle.draw();
+        circle.draw();
         line1.draw();
         line2.draw();
-//        triangle.draw();
+        triangle.draw();
     }
 }
