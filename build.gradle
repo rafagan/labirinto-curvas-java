@@ -34,6 +34,9 @@ dependencies {
 
     // Java OpenGL Math Library
     implementation 'org.joml:joml:1.10.2'
+
+    // JSON
+    implementation 'com.google.code.gson:gson:2.8.8'
 }
 
 mainClassName = 'br.com.camila.Application'
