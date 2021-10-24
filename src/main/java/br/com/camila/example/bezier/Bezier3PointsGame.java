@@ -10,6 +10,10 @@ public class Bezier3PointsGame implements IGame {
     Vector2f p1, p2, p3;
     Circle c1, c2, c3;
     Bezier3P bezier;
+    Circle circle;
+
+    float time = 0f;
+    Vector2f position = new Vector2f();
 
     @Override
     public void init() {
@@ -22,6 +26,8 @@ public class Bezier3PointsGame implements IGame {
         c3 = new Circle(p3, 5);
 
         bezier = new Bezier3P(p1, p2, p3);
+        circle = new Circle(position, 5);
+        circle.setFilled(true);
     }
 
     @Override
@@ -31,7 +37,7 @@ public class Bezier3PointsGame implements IGame {
 
     @Override
     public void update() {
-
+        position.set(bezier.lerp(time += 0.001f));
     }
 
     @Override
@@ -40,5 +46,6 @@ public class Bezier3PointsGame implements IGame {
         c1.draw();
         c2.draw();
         c3.draw();
+        circle.draw();
     }
 }

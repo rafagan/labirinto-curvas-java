@@ -1,10 +1,19 @@
 package br.com.camila.primitive;
 
+import br.com.camila.math.MathUtil;
 import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 
 public class Bezier4P implements IPrimitive {
     private Vector2f p1, p2, p3, p4;
+    private int resolution = 100;
+
+    private final Vector2f l1 = new Vector2f();
+    private final Vector2f l2 = new Vector2f();
+    private final Vector2f l3 = new Vector2f();
+    private final Vector2f m1 = new Vector2f();
+    private final Vector2f m2 = new Vector2f();
+    private final Vector2f p = new Vector2f();
 
     public Bezier4P(Vector2f p1, Vector2f p2, Vector2f p3, Vector2f p4) {
         this.p1 = p1;
@@ -45,16 +54,30 @@ public class Bezier4P implements IPrimitive {
         this.p4 = p4;
     }
 
+    public int getResolution() {
+        return resolution;
+    }
+
+    public void setResolution(int resolution) {
+        this.resolution = resolution;
+    }
+
+    public Vector2f lerp(float t) {
+        t = MathUtil.clamp(t, 0.0f, 1.0f);
+        p1.lerp(p2, t, l1);
+        p2.lerp(p3, t, l2);
+        p3.lerp(p4, t, l3);
+        l1.lerp(l2, t, m1);
+        l2.lerp(l3, t, m2);
+        m1.lerp(m2, t, p);
+        return new Vector2f(p);
+    }
+
     @Override
     public void draw() {
         GL11.glBegin(GL11.GL_LINE_STRIP);
-        for(float t = 0f; t < 1f; t += 0.01f) {
-            Vector2f l1 = p1.lerp(p2, t, new Vector2f());
-            Vector2f l2 = p2.lerp(p3, t, new Vector2f());
-            Vector2f l3 = p3.lerp(p4, t, new Vector2f());
-            Vector2f m1 = l1.lerp(l2, t, new Vector2f());
-            Vector2f m2 = l2.lerp(l3, t, new Vector2f());
-            Vector2f p = m1.lerp(m2, t, new Vector2f());
+        for(float t = 0f; t < 1f; t += 1f / resolution) {
+            Vector2f p = lerp(t);
             GL11.glVertex2f(p.x, p.y);
         }
         GL11.glEnd();

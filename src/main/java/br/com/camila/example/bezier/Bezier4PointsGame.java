@@ -2,6 +2,7 @@ package br.com.camila.example.bezier;
 
 import br.com.camila.game.IGame;
 import br.com.camila.game.World;
+import br.com.camila.math.MathUtil;
 import br.com.camila.primitive.Bezier4P;
 import br.com.camila.primitive.Circle;
 import org.joml.Vector2f;
@@ -10,6 +11,10 @@ public class Bezier4PointsGame implements IGame {
     Vector2f p1, p2, p3, p4;
     Circle c1, c2, c3, c4;
     Bezier4P bezier;
+    Circle circle;
+
+    float time = 0f;
+    Vector2f position = new Vector2f();
 
     @Override
     public void init() {
@@ -24,6 +29,8 @@ public class Bezier4PointsGame implements IGame {
         c4 = new Circle(p4, 5);
 
         bezier = new Bezier4P(p1, p2, p3, p4);
+        circle = new Circle(position, 5);
+        circle.setFilled(true);
     }
 
     @Override
@@ -33,7 +40,7 @@ public class Bezier4PointsGame implements IGame {
 
     @Override
     public void update() {
-
+        position.set(bezier.lerp(time += 0.001f));
     }
 
     @Override
@@ -43,5 +50,6 @@ public class Bezier4PointsGame implements IGame {
         c2.draw();
         c3.draw();
         c4.draw();
+        circle.draw();
     }
 }

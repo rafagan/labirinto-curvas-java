@@ -7,7 +7,7 @@ import br.com.camila.window.Window;
 
 public class Application {
     public static void main(String[] args) {
-        Window.getInstance().run(new Bezier4PointsGame());
+        Window.getInstance().run(new Bezier3PointsGame());
     }
 }
 
