@@ -2,21 +2,20 @@ package br.com.camila.example.curve;
 
 import br.com.camila.game.Global;
 import br.com.camila.game.IGame;
-import br.com.camila.game.World;
-import br.com.camila.math.function.Sine;
+import br.com.camila.math.MathUtil;
+import br.com.camila.primitive.Circle;
 import br.com.camila.primitive.Curve;
+import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 
-public class CurveGame implements IGame {
+public class ParabolaGame implements IGame {
     Curve curve;
-
     @Override
     public void init() {
-        // curve = new Curve(new Sine(100, World.yFromRatio(0.5f)));
         curve = new Curve(new Curve.CurveFunction() {
-            float a = -0.01f;
-            float b = 0;
-            float c = 0;
+            final float a = -0.01f;
+            final float b = 0;
+            final float c = 0;
 
             @Override
             public float f(float x) {
