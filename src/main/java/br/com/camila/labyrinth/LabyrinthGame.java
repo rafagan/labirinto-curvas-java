@@ -8,7 +8,6 @@ import br.com.camila.labyrinth.model.LabyrinthCurve;
 import br.com.camila.labyrinth.model.LabyrinthPoint;
 import br.com.camila.primitive.Bezier3P;
 import br.com.camila.primitive.Bezier4P;
-import br.com.camila.primitive.Curve;
 import br.com.camila.primitive.IPrimitive;
 import org.joml.Vector2f;
 
@@ -17,7 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LabyrinthGame implements IGame {
-    Labyrinth level;
     List<IPrimitive> curves = new ArrayList<>();
 
     @Override
@@ -30,21 +28,17 @@ public class LabyrinthGame implements IGame {
                 LabyrinthPoint p3 = level.getPoints().get(curve.getP3());
                 LabyrinthPoint p4;
 
+                Vector2f v1 = new Vector2f(World.xFromRatio(p1.getX()), World.yFromRatio(p1.getY()));
+                Vector2f v2 = new Vector2f(World.xFromRatio(p2.getX()), World.yFromRatio(p2.getY()));
+                Vector2f v3 = new Vector2f(World.xFromRatio(p3.getX()), World.yFromRatio(p3.getY()));
+
                 IPrimitive primitive;
                 if(curve.hasFourPoints()) {
                     p4 = level.getPoints().get(curve.getP4());
-                    primitive = new Bezier4P(
-                            new Vector2f(World.xFromRatio(p1.getX()), World.yFromRatio(p1.getY())),
-                            new Vector2f(World.xFromRatio(p2.getX()), World.yFromRatio(p2.getY())),
-                            new Vector2f(World.xFromRatio(p3.getX()), World.yFromRatio(p3.getY())),
-                            new Vector2f(World.xFromRatio(p4.getX()), World.yFromRatio(p4.getY()))
-                    );
+                    Vector2f v4 = new Vector2f(World.xFromRatio(p4.getX()), World.yFromRatio(p4.getY()));
+                    primitive = new Bezier4P(v1, v2, v3, v4);
                 } else {
-                    primitive = new Bezier3P(
-                            new Vector2f(World.xFromRatio(p1.getX()), World.yFromRatio(p1.getY())),
-                            new Vector2f(World.xFromRatio(p2.getX()), World.yFromRatio(p2.getY())),
-                            new Vector2f(World.xFromRatio(p3.getX()), World.yFromRatio(p3.getY()))
-                    );
+                    primitive = new Bezier3P(v1, v2, v3);
                 }
 
                 curves.add(primitive);
