@@ -7,7 +7,7 @@ import org.joml.Vector2f;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Circle implements IPrimitive {
+public class Circle implements IDrawable {
     private Vector2f center;
     private double radius;
     private int resolution = 3000;
@@ -37,10 +37,12 @@ public class Circle implements IPrimitive {
         this.radius = radius;
     }
 
+    @Override
     public GlColor getColor() {
         return color;
     }
 
+    @Override
     public void setColor(GlColor color) {
         this.color = color;
     }

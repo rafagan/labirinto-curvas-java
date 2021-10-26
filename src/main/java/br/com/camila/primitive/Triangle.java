@@ -6,7 +6,7 @@ import org.joml.Vector2f;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Triangle implements IPrimitive {
+public class Triangle implements IDrawable {
     private Vector2f p1;
     private Vector2f p2;
     private Vector2f p3;
@@ -45,10 +45,12 @@ public class Triangle implements IPrimitive {
         this.p3 = p3;
     }
 
+    @Override
     public GlColor getColor() {
         return color;
     }
 
+    @Override
     public void setColor(GlColor color) {
         this.color = color;
     }
@@ -66,12 +68,13 @@ public class Triangle implements IPrimitive {
         if(color != null) color.glSet();
 
         glBegin(filled ? GL_TRIANGLES : GL_LINE_LOOP);
-
-        glVertex2f(p1.x, p1.y);
-        glVertex2f(p2.x, p2.y);
-        glVertex2f(p3.x, p3.y);
-
+        {
+            glVertex2f(p1.x, p1.y);
+            glVertex2f(p2.x, p2.y);
+            glVertex2f(p3.x, p3.y);
+        }
         glEnd();
+
         if(color != null) Global.defaultColor.glSet();
     }
 }

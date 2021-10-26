@@ -1,10 +1,19 @@
 package br.com.camila.labyrinth.model;
 
+import br.com.camila.primitive.IBezier;
+
+import java.util.Objects;
+import java.util.Random;
+
 public class LabyrinthCurve {
     private int p1;
     private int p2;
     private int p3;
     private Integer p4;
+
+    private LabyrinthPoint startPoint;
+    private LabyrinthPoint endPoint;
+    private IBezier bezier;
 
     public int getP1() {
         return p1;
@@ -40,5 +49,42 @@ public class LabyrinthCurve {
 
     public boolean hasFourPoints() {
         return this.p4 != null;
+    }
+
+    public LabyrinthPoint getStartPoint() {
+        return startPoint;
+    }
+
+    public void setStartPoint(LabyrinthPoint startPoint) {
+        this.startPoint = startPoint;
+    }
+
+    public LabyrinthPoint getEndPoint() {
+        return endPoint;
+    }
+
+    public void setEndPoint(LabyrinthPoint endPoint) {
+        this.endPoint = endPoint;
+    }
+
+    public IBezier getBezier() {
+        return bezier;
+    }
+
+    public void setBezier(IBezier bezier) {
+        this.bezier = bezier;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        LabyrinthCurve that = (LabyrinthCurve) o;
+        return p1 == that.p1 && p2 == that.p2 && p3 == that.p3 && Objects.equals(p4, that.p4);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(p1, p2, p3, p4);
     }
 }

@@ -55,6 +55,7 @@ public class Window {
         while (!glfwWindowShouldClose(glfwWindowAddress)) {
             game.update();
             display();
+            KeyListener.getInstance().update();
             glfwPollEvents();
         }
     }

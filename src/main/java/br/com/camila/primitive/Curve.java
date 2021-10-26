@@ -1,11 +1,14 @@
 package br.com.camila.primitive;
 
+import br.com.camila.game.Global;
+import br.com.camila.util.GlColor;
 import org.joml.Vector2f;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Curve implements IPrimitive {
+public class Curve implements IDrawable {
     private int resolution = 100;
+    private GlColor color;
 
     public interface CurveFunction {
         float f(float x);
@@ -27,7 +30,19 @@ public class Curve implements IPrimitive {
     }
 
     @Override
+    public GlColor getColor() {
+        return color;
+    }
+
+    @Override
+    public void setColor(GlColor color) {
+        this.color = color;
+    }
+
+    @Override
     public void draw() {
+        if(color != null) color.glSet();
+
         glBegin(GL_LINE_STRIP);
         {
             float[] it = function.interval();
@@ -38,5 +53,7 @@ public class Curve implements IPrimitive {
             }
         }
         glEnd();
+
+        if(color != null) Global.defaultColor.glSet();
     }
 }

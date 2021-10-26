@@ -1,12 +1,15 @@
 package br.com.camila.primitive;
 
+import br.com.camila.game.Global;
 import br.com.camila.math.MathUtil;
+import br.com.camila.util.GlColor;
 import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 
-public class Bezier3P implements IPrimitive {
+public class Bezier3P implements IBezier {
     private Vector2f p1, p2, p3;
     private int resolution = 100;
+    private GlColor color;
 
     private final Vector2f l1 = new Vector2f();
     private final Vector2f l2 = new Vector2f();
@@ -50,6 +53,16 @@ public class Bezier3P implements IPrimitive {
         this.resolution = resolution;
     }
 
+    @Override
+    public GlColor getColor() {
+        return color;
+    }
+
+    @Override
+    public void setColor(GlColor color) {
+        this.color = color;
+    }
+
     // Algoritmo de De Casteljau
 
     public Vector2f lerp(float t) {
@@ -62,11 +75,15 @@ public class Bezier3P implements IPrimitive {
 
     @Override
     public void draw() {
+        if(color != null) color.glSet();
+
         GL11.glBegin(GL11.GL_LINE_STRIP);
         for(float t = 0f; t < 1f; t += 1f / resolution) {
             lerp(t);
             GL11.glVertex2f(p.x, p.y);
         }
         GL11.glEnd();
+
+        if(color != null) Global.defaultColor.glSet();
     }
 }

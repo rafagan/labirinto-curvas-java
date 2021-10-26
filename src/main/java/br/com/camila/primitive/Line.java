@@ -6,7 +6,7 @@ import org.joml.Vector2f;
 
 import static org.lwjgl.opengl.GL11.*;
 
-public class Line implements IPrimitive {
+public class Line implements IDrawable {
     private Vector2f p1;
     private Vector2f p2;
     private GlColor color;
@@ -37,10 +37,12 @@ public class Line implements IPrimitive {
         this.p2 = p2;
     }
 
+    @Override
     public GlColor getColor() {
         return color;
     }
 
+    @Override
     public void setColor(GlColor color) {
         this.color = color;
     }
