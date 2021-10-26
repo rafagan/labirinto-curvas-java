@@ -1,5 +1,6 @@
 package br.com.camila.labyrinth.model;
 
+import br.com.camila.game.World;
 import org.joml.Vector2f;
 
 import java.util.ArrayList;
@@ -9,7 +10,7 @@ public class LabyrinthPoint {
     private float x;
     private float y;
 
-    private List<LabyrinthCurve> curves = new ArrayList<>();
+    private final List<LabyrinthCurve> curves = new ArrayList<>();
 
     public float getX() {
         return x;
@@ -28,14 +29,10 @@ public class LabyrinthPoint {
     }
 
     public Vector2f getVector() {
-        return new Vector2f(x, y);
+        return new Vector2f(World.xFromRatio(x), World.yFromRatio(y));
     }
 
     public List<LabyrinthCurve> getCurves() {
         return curves;
-    }
-
-    public void setCurves(List<LabyrinthCurve> curves) {
-        this.curves = curves;
     }
 }

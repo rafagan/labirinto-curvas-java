@@ -28,22 +28,17 @@ public class LabyrinthGame implements IGame {
                 LabyrinthPoint p3 = level.getPoints().get(curve.getP3());
                 LabyrinthPoint p4;
 
-                Vector2f v1 = new Vector2f(World.xFromRatio(p1.getX()), World.yFromRatio(p1.getY()));
-                Vector2f v2 = new Vector2f(World.xFromRatio(p2.getX()), World.yFromRatio(p2.getY()));
-                Vector2f v3 = new Vector2f(World.xFromRatio(p3.getX()), World.yFromRatio(p3.getY()));
-
                 curve.setStartPoint(p1);
                 p1.getCurves().add(curve);
 
                 IBezier primitive;
                 if(curve.hasFourPoints()) {
                     p4 = level.getPoints().get(curve.getP4());
-                    Vector2f v4 = new Vector2f(World.xFromRatio(p4.getX()), World.yFromRatio(p4.getY()));
-                    primitive = new Bezier4P(v1, v2, v3, v4);
+                    primitive = new Bezier4P(p1.getVector(), p2.getVector(), p3.getVector(), p4.getVector());
                     curve.setEndPoint(p4);
                     p4.getCurves().add(curve);
                 } else {
-                    primitive = new Bezier3P(v1, v2, v3);
+                    primitive = new Bezier3P(p1.getVector(), p2.getVector(), p3.getVector());
                     curve.setEndPoint(p3);
                     p3.getCurves().add(curve);
                 }

@@ -25,6 +25,7 @@ public class Vehicle implements IDrawable {
     private int nextCurveIndex;
     private List<LabyrinthCurve> nextCurves;
     private float currentT = 0.5f;
+    private boolean inversedT = true;
     private boolean ia;
     private boolean forward;
     private boolean stopped;
@@ -112,6 +113,10 @@ public class Vehicle implements IDrawable {
             nextCurve = nextCurves.get(nextCurveIndex);
         } while(nextCurve == currentCurve);
 
+        Vector2f finalPosition = currentCurve.getBezier().lerp(inversedT ? 0.0f : 1.0f);
+        float dist1 = (finalPosition.sub(nextCurve.getStartPoint().getVector())).lengthSquared();
+        float dist2 = (finalPosition.sub(nextCurve.getEndPoint().getVector())).lengthSquared();
+        inversedT = dist1 > dist2;
         configNextCurve(nextCurve);
     }
 
@@ -180,8 +185,8 @@ public class Vehicle implements IDrawable {
     public void draw() {
         if(color != null) color.glSet();
 
-        Vector2f position = currentCurve.getBezier().lerp(currentT);
-        Vector2f nextPosition = currentCurve.getBezier().lerp(currentT + 0.0001f);
+        Vector2f position = currentCurve.getBezier().lerp(inversedT ? 1 - currentT : currentT);
+        Vector2f nextPosition = currentCurve.getBezier().lerp(currentT + (inversedT ? -1 : 1) * 0.0001f);
         Vector2f direction = (nextPosition.sub(position, new Vector2f())).normalize();
         float angle = (float) (Math.atan2(direction.y, direction.x) / (2 * Math.PI) * 360.0f);
 
