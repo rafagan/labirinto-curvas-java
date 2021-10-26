@@ -166,6 +166,8 @@ public class Vehicle implements IDrawable {
 
             if (KeyListener.getInstance().isKeyFirstPressed(GLFW_KEY_Z)) {
                 forward = !forward;
+                if(nextCurve != null) nextCurve.getBezier().setColor(Global.defaultColor);
+                nextCurve = null;
             }
 
             if (KeyListener.getInstance().isKeyFirstPressed(GLFW_KEY_SPACE)) {
