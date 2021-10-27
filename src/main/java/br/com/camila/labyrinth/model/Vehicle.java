@@ -25,11 +25,13 @@ public class Vehicle implements IDrawable {
     private int nextCurveIndex;
     private List<LabyrinthCurve> nextCurves;
     private float currentT = 0.5f;
-    private boolean inversedT = true;
+    private boolean invertedT = true;
+    private boolean nextInvertedT = true;
     private boolean ia;
     private boolean forward;
     private boolean stopped;
     private GlColor color;
+    private Vector2f position;
 
     public Vehicle(boolean isIA, boolean forward, LabyrinthCurve startCurve) {
         triangle = new Triangle(
@@ -41,6 +43,7 @@ public class Vehicle implements IDrawable {
         this.forward = forward;
         color = new GlColor(isIA ? Color.red : Color.green);
         currentCurve = startCurve;
+        position = startCurve.getBezier().lerp(0.0f);
     }
 
     public LabyrinthCurve getCurrentCurve() {
@@ -103,9 +106,9 @@ public class Vehicle implements IDrawable {
 
     private void changeNextCurveRandomly() {
         if(forward && currentT >= 0.5) {
-            nextCurves = currentCurve.getEndPoint().getCurves();
+            nextCurves = (invertedT ? currentCurve.getStartPoint() : currentCurve.getEndPoint()).getCurves();
         } else {
-            nextCurves = currentCurve.getStartPoint().getCurves();
+            nextCurves = (invertedT ? currentCurve.getEndPoint() : currentCurve.getStartPoint()).getCurves();
         }
 
         do {
@@ -113,10 +116,10 @@ public class Vehicle implements IDrawable {
             nextCurve = nextCurves.get(nextCurveIndex);
         } while(nextCurve == currentCurve);
 
-        Vector2f finalPosition = currentCurve.getBezier().lerp(inversedT ? 0.0f : 1.0f);
-        float dist1 = (finalPosition.sub(nextCurve.getStartPoint().getVector())).lengthSquared();
-        float dist2 = (finalPosition.sub(nextCurve.getEndPoint().getVector())).lengthSquared();
-        inversedT = dist1 > dist2;
+        Vector2f finalPosition = currentCurve.getBezier().lerp(invertedT ? 0.0f : 1.0f);
+        float dist1 = (finalPosition.sub(nextCurve.getStartPoint().getVector(), new Vector2f())).lengthSquared();
+        float dist2 = (finalPosition.sub(nextCurve.getEndPoint().getVector(), new Vector2f())).lengthSquared();
+        nextInvertedT = dist1 > dist2 && forward;
         configNextCurve(nextCurve);
     }
 
@@ -141,6 +144,22 @@ public class Vehicle implements IDrawable {
         nextCurve.getBezier().setColor(new GlColor(Color.green));
     }
 
+    public Vector2f getMin() {
+        return new Vector2f(position.x + -0.5f * width, position.y + -0.5f * height);
+    }
+
+    public Vector2f getMax() {
+        return new Vector2f(position.x + 0.5f * width, position.y + 0.5f * height);
+    }
+
+    public boolean hasCollision(Vehicle vehicle) {
+        if(getMax().x < vehicle.getMin().x) return false;
+        if(getMin().x > vehicle.getMax().x) return false;
+        if(getMax().y < vehicle.getMin().y) return false;
+        if(getMin().y > vehicle.getMax().y) return false;
+        return true;
+    }
+
     public void update(float deltaTime) {
         if(!stopped) {
             currentT += forward ? deltaTime : -deltaTime;
@@ -153,6 +172,7 @@ public class Vehicle implements IDrawable {
         if(shouldChangeCurve()) {
             currentCurve = nextCurve;
             nextCurve = null;
+            invertedT = nextInvertedT;
             Objects.requireNonNull(currentCurve).getBezier().setColor(Global.defaultColor);
 
             if(forward && currentT >= 1.0f) {
@@ -185,8 +205,9 @@ public class Vehicle implements IDrawable {
     public void draw() {
         if(color != null) color.glSet();
 
-        Vector2f position = currentCurve.getBezier().lerp(inversedT ? 1 - currentT : currentT);
-        Vector2f nextPosition = currentCurve.getBezier().lerp(currentT + (inversedT ? -1 : 1) * 0.0001f);
+        float t = invertedT ? 1 - currentT : currentT;
+        position = currentCurve.getBezier().lerp(t);
+        Vector2f nextPosition = currentCurve.getBezier().lerp(t + (invertedT ? -0.0001f : 0.0001f));
         Vector2f direction = (nextPosition.sub(position, new Vector2f())).normalize();
         float angle = (float) (Math.atan2(direction.y, direction.x) / (2 * Math.PI) * 360.0f);
 

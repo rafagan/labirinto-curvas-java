@@ -1,5 +1,6 @@
 package br.com.camila.labyrinth;
 
+import br.com.camila.game.Global;
 import br.com.camila.game.IGame;
 import br.com.camila.game.World;
 import br.com.camila.labyrinth.io.LabyrinthReader;
@@ -34,13 +35,13 @@ public class LabyrinthGame implements IGame {
                 IBezier primitive;
                 if(curve.hasFourPoints()) {
                     p4 = level.getPoints().get(curve.getP4());
-                    primitive = new Bezier4P(p1.getVector(), p2.getVector(), p3.getVector(), p4.getVector());
                     curve.setEndPoint(p4);
                     p4.getCurves().add(curve);
+                    primitive = new Bezier4P(p1.getVector(), p2.getVector(), p3.getVector(), p4.getVector());
                 } else {
-                    primitive = new Bezier3P(p1.getVector(), p2.getVector(), p3.getVector());
                     curve.setEndPoint(p3);
                     p3.getCurves().add(curve);
+                    primitive = new Bezier3P(p1.getVector(), p2.getVector(), p3.getVector());
                 }
 
                 curve.setBezier(primitive);
@@ -55,21 +56,21 @@ public class LabyrinthGame implements IGame {
             Set<LabyrinthCurve> chooseCurves = new HashSet<>();
             chooseCurves.add(curve);
 
-//            for(int i = 0; i < 10; i++) {
-//                while(true) {
-//                    if(chooseCurves.size() == enemies.size() - 1) break;
-//                    if(chooseCurves.size() == level.getCurves().size()) break;
-//
-//                    curve = level.getCurves().get(new Random().nextInt(curves.size()));
-//                    if(!chooseCurves.contains(curve)) {
-//                        chooseCurves.add(curve);
-//                        break;
-//                    }
-//                }
-//
-//                boolean forward = i < 5;
-//                enemies.add(new Vehicle(true, forward, curve));
-//            }
+            for(int i = 0; i < 0; i++) {
+                while(true) {
+                    if(chooseCurves.size() == enemies.size() - 1) break;
+                    if(chooseCurves.size() == level.getCurves().size()) break;
+
+                    curve = level.getCurves().get(new Random().nextInt(curves.size()));
+                    if(!chooseCurves.contains(curve)) {
+                        chooseCurves.add(curve);
+                        break;
+                    }
+                }
+
+                boolean forward = i < 5;
+                enemies.add(new Vehicle(true, forward, curve));
+            }
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -82,10 +83,16 @@ public class LabyrinthGame implements IGame {
 
     @Override
     public void update() {
-        float deltaTime = 0.001f;
+        if(Global.gameOver) return;
+
+        float deltaTime = 0.0007f;
 
         for(Vehicle enemy: enemies) {
             enemy.update(deltaTime);
+
+            if(player.hasCollision(enemy)) {
+                Global.gameOver = true;
+            }
         }
         player.update(deltaTime);
     }

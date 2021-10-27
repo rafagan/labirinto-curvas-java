@@ -9,4 +9,6 @@ public class Global {
     public static final String windowTitle = "Labirinto com Curvas by Camila";
     public static final int windowDefaultWidth = 1024;
     public static final int windowDefaultHeight = 768;
+
+    public static boolean gameOver = false;
 }

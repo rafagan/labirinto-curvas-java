@@ -1,11 +1,8 @@
 package br.com.camila.labyrinth.model;
 
-import br.com.camila.game.World;
 import br.com.camila.primitive.IBezier;
-import org.joml.Vector2f;
 
 import java.util.Objects;
-import java.util.Random;
 
 public class LabyrinthCurve {
     private int p1;
