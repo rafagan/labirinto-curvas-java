@@ -85,7 +85,7 @@ public class LabyrinthGame implements IGame {
     public void update() {
         if(Global.gameOver) return;
 
-        float deltaTime = 0.0007f;
+        float deltaTime = 0.0005f;
 
         for(Vehicle enemy: enemies) {
             enemy.update(deltaTime);

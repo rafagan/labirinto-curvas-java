@@ -89,11 +89,11 @@ public class Vehicle implements IDrawable {
     }
 
     private boolean shouldChooseCurve() {
-        return (forward && currentT >= 0.5) || (!forward && currentT <= 0.5);
+        return currentT >= 0.5;
     }
 
     private boolean shouldChangeCurve() {
-        return (forward && currentT >= 1.0) || (!forward && currentT <= 0.0);
+        return currentT >= 1.0;
     }
 
     public boolean isStopped() {
@@ -104,39 +104,49 @@ public class Vehicle implements IDrawable {
         this.stopped = stopped;
     }
 
-    private void changeNextCurveRandomly() {
-        if(forward && currentT >= 0.5) {
-            nextCurves = (invertedT ? currentCurve.getStartPoint() : currentCurve.getEndPoint()).getCurves();
-        } else {
-            nextCurves = (invertedT ? currentCurve.getEndPoint() : currentCurve.getStartPoint()).getCurves();
-        }
+    private boolean shouldBeInverted() {
+        Vector2f finalPosition = currentCurve.getBezier().lerp(invertedT ? 0.0f : 1.0f);
+        float dist1 = (finalPosition.sub(nextCurve.getStartPoint().getVector(), new Vector2f())).lengthSquared();
+        float dist2 = (finalPosition.sub(nextCurve.getEndPoint().getVector(), new Vector2f())).lengthSquared();
+        return dist1 > dist2;
+    }
 
+    private void discoverNextCurves() {
+        nextCurves = (invertedT ? currentCurve.getStartPoint() : currentCurve.getEndPoint()).getCurves();
+    }
+
+    private void changeNextCurveRandomly() {
+        discoverNextCurves();
+
+        LabyrinthCurve nextCurve;
         do {
             nextCurveIndex = new Random().nextInt(nextCurves.size());
             nextCurve = nextCurves.get(nextCurveIndex);
         } while(nextCurve == currentCurve);
 
-        Vector2f finalPosition = currentCurve.getBezier().lerp(invertedT ? 0.0f : 1.0f);
-        float dist1 = (finalPosition.sub(nextCurve.getStartPoint().getVector(), new Vector2f())).lengthSquared();
-        float dist2 = (finalPosition.sub(nextCurve.getEndPoint().getVector(), new Vector2f())).lengthSquared();
-        nextInvertedT = dist1 > dist2 && forward;
         configNextCurve(nextCurve);
     }
 
     private void changeNextCurveLinearly() {
+        LabyrinthCurve nextCurve;
         while(true) {
             nextCurveIndex = (nextCurveIndex + 1) % nextCurves.size();
-            LabyrinthCurve nextCurve = nextCurves.get(nextCurveIndex);
+            nextCurve = nextCurves.get(nextCurveIndex);
             if(nextCurve == this.nextCurve) continue;
             if(nextCurve == currentCurve) continue;
 
-            this.nextCurve = nextCurve;
-            configNextCurve(nextCurve);
             break;
         }
+
+        configNextCurve(nextCurve);
     }
 
     private void configNextCurve(LabyrinthCurve nextCurve) {
+        this.nextCurve = nextCurve;
+        nextInvertedT = shouldBeInverted();
+
+        if(ia) return;
+
         for(LabyrinthCurve curve: nextCurves) {
             curve.getBezier().setColor(Global.defaultColor);
         }
@@ -162,7 +172,7 @@ public class Vehicle implements IDrawable {
 
     public void update(float deltaTime) {
         if(!stopped) {
-            currentT += forward ? deltaTime : -deltaTime;
+            currentT += deltaTime;
         }
 
         if(nextCurve == null && shouldChooseCurve()) {
@@ -173,12 +183,10 @@ public class Vehicle implements IDrawable {
             currentCurve = nextCurve;
             nextCurve = null;
             invertedT = nextInvertedT;
-            Objects.requireNonNull(currentCurve).getBezier().setColor(Global.defaultColor);
+            currentT = 0.0f;
 
-            if(forward && currentT >= 1.0f) {
-                currentT = 0.0f;
-            } else if(!forward && currentT <= 0.0f) {
-                currentT = 1.0f;
+            if(!ia) {
+                Objects.requireNonNull(currentCurve).getBezier().setColor(Global.defaultColor);
             }
         }
 
@@ -191,6 +199,8 @@ public class Vehicle implements IDrawable {
 
             if (KeyListener.getInstance().isKeyFirstPressed(GLFW_KEY_Z)) {
                 forward = !forward;
+                invertedT = !invertedT;
+                currentT = 1.0f - currentT;
                 if(nextCurve != null) nextCurve.getBezier().setColor(Global.defaultColor);
                 nextCurve = null;
             }
