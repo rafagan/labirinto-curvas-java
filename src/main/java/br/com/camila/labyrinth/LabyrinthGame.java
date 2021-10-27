@@ -56,7 +56,8 @@ public class LabyrinthGame implements IGame {
             Set<LabyrinthCurve> chooseCurves = new HashSet<>();
             chooseCurves.add(curve);
 
-            for(int i = 0; i < 0; i++) {
+            // TODO: Na versão com todas as curvas trocar para i < 10
+            for(int i = 0; i < 1; i++) {
                 while(true) {
                     if(chooseCurves.size() == enemies.size() - 1) break;
                     if(chooseCurves.size() == level.getCurves().size()) break;
@@ -85,16 +86,14 @@ public class LabyrinthGame implements IGame {
     public void update() {
         if(Global.gameOver) return;
 
-        float deltaTime = 0.0005f;
-
         for(Vehicle enemy: enemies) {
-            enemy.update(deltaTime);
+            enemy.update();
 
             if(player.hasCollision(enemy)) {
                 Global.gameOver = true;
             }
         }
-        player.update(deltaTime);
+        player.update();
     }
 
     @Override

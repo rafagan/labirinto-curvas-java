@@ -170,9 +170,9 @@ public class Vehicle implements IDrawable {
         return true;
     }
 
-    public void update(float deltaTime) {
+    public void update() {
         if(!stopped) {
-            currentT += deltaTime;
+            currentT += Global.deltaTime;
         }
 
         if(nextCurve == null && shouldChooseCurve()) {

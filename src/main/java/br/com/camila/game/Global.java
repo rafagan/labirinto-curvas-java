@@ -11,4 +11,7 @@ public class Global {
     public static final int windowDefaultHeight = 768;
 
     public static boolean gameOver = false;
+    public static final int frameRate = 60;
+    public static final float goalRate = 1.0f / Global.frameRate;
+    public static float deltaTime = 0;
 }

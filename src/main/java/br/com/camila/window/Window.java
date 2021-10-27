@@ -51,12 +51,25 @@ public class Window {
         game.init();
     }
 
+    private void checkSleep(float deltaTime) {
+        if (Global.deltaTime >= Global.goalRate) return;
+
+        try {
+            Thread.sleep((long) ((Global.goalRate - Global.deltaTime) * 1000));
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     private void execute() {
         while (!glfwWindowShouldClose(glfwWindowAddress)) {
+            long startLoopTime = System.currentTimeMillis();
             game.update();
             display();
             KeyListener.getInstance().update();
             glfwPollEvents();
+            checkSleep((System.currentTimeMillis() - startLoopTime) / 1000.0f);
+            Global.deltaTime = Global.goalRate;
         }
     }
 
