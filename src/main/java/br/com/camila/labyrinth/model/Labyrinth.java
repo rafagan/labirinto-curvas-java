@@ -1,10 +1,11 @@
 package br.com.camila.labyrinth.model;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Labyrinth {
-    private List<LabyrinthPoint> points;
-    private List<LabyrinthCurve> curves;
+    private List<LabyrinthPoint> points = new ArrayList<>();
+    private List<LabyrinthCurve> curves = new ArrayList<>();
 
     public List<LabyrinthPoint> getPoints() {
         return points;
