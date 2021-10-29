@@ -27,21 +27,21 @@ public class Vehicle implements IDrawable {
     private float currentT = 0.5f;
     private boolean invertedT = true;
     private boolean nextInvertedT = true;
-    private boolean ia;
+    private boolean ai;
     private boolean forward;
     private boolean stopped;
     private GlColor color;
     private Vector2f position;
 
-    public Vehicle(boolean isIA, boolean forward, LabyrinthCurve startCurve) {
+    public Vehicle(boolean isAI, boolean forward, LabyrinthCurve startCurve) {
         triangle = new Triangle(
                 new Vector2f(0.5f * width, 0.0f * height),
                 new Vector2f(-0.5f * width, 0.5f * height),
                 new Vector2f(-0.5f * width, -0.5f * height)
         );
-        this.ia = isIA;
+        this.ai = isAI;
         this.forward = forward;
-        color = new GlColor(isIA ? Color.red : Color.green);
+        color = new GlColor(isAI ? Color.red : Color.green);
         currentCurve = startCurve;
         position = startCurve.getBezier().lerp(0.0f);
     }
@@ -62,12 +62,12 @@ public class Vehicle implements IDrawable {
         this.nextCurve = nextCurve;
     }
 
-    public boolean isIa() {
-        return ia;
+    public boolean isAi() {
+        return ai;
     }
 
-    public void setIa(boolean ia) {
-        this.ia = ia;
+    public void setAi(boolean ai) {
+        this.ai = ai;
     }
 
     public boolean isForward() {
@@ -145,7 +145,7 @@ public class Vehicle implements IDrawable {
         this.nextCurve = nextCurve;
         nextInvertedT = shouldBeInverted();
 
-        if(ia) return;
+        if(ai) return;
 
         for(LabyrinthCurve curve: nextCurves) {
             curve.getBezier().setColor(Global.defaultColor);
@@ -172,7 +172,7 @@ public class Vehicle implements IDrawable {
 
     public void update() {
         if(!stopped) {
-            currentT += Global.deltaTime;
+            currentT += Global.deltaTime / 2.0;
         }
 
         if(nextCurve == null && shouldChooseCurve()) {
@@ -185,12 +185,12 @@ public class Vehicle implements IDrawable {
             invertedT = nextInvertedT;
             currentT = 0.0f;
 
-            if(!ia) {
+            if(!ai) {
                 Objects.requireNonNull(currentCurve).getBezier().setColor(Global.defaultColor);
             }
         }
 
-        if(!ia) {
+        if(!ai) {
             if (nextCurve != null && nextCurves.size() > 2) {
                 if (KeyListener.getInstance().isKeyFirstPressed(GLFW_KEY_X)) {
                     changeNextCurveLinearly();

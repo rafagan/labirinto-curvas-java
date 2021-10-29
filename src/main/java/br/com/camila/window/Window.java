@@ -52,10 +52,10 @@ public class Window {
     }
 
     private void checkSleep(float deltaTime) {
-        if (Global.deltaTime >= Global.goalRate) return;
+        if (deltaTime >= Global.goalRate) return;
 
         try {
-            Thread.sleep((long) ((Global.goalRate - Global.deltaTime) * 1000));
+            Thread.sleep((long) ((Global.goalRate - deltaTime) * 1000));
         } catch (InterruptedException e) {
             e.printStackTrace();
         }

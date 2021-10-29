@@ -10,6 +10,7 @@ import br.com.camila.labyrinth.model.LabyrinthPoint;
 import br.com.camila.labyrinth.model.Vehicle;
 import br.com.camila.primitive.*;
 import org.joml.Vector2f;
+import org.lwjgl.opengl.GL11;
 
 import java.io.FileNotFoundException;
 import java.util.*;
@@ -57,7 +58,7 @@ public class LabyrinthGame implements IGame {
             chooseCurves.add(curve);
 
             // TODO: Na versão com todas as curvas trocar para i < 10
-            for(int i = 0; i < 1; i++) {
+            for(int i = 0; i < 10; i++) {
                 while(true) {
                     if(chooseCurves.size() == enemies.size() - 1) break;
                     if(chooseCurves.size() == level.getCurves().size()) break;
