@@ -10,6 +10,7 @@ public class Bezier4P implements IBezier {
     private Vector2f p1, p2, p3, p4;
     private int resolution = 100;
     private GlColor color;
+    private float lengthValue = -1;
 
     private final Vector2f l1 = new Vector2f();
     private final Vector2f l2 = new Vector2f();
@@ -94,6 +95,24 @@ public class Bezier4P implements IBezier {
         p.y = w1 * p1.y + w2 * p2.y + w3 * p3.y + w4 * p4.y;
 
         return new Vector2f(p);
+    }
+
+    @Override
+    public float length() {
+        if(lengthValue < 0) {
+            float dt = 1.0f / 200.0f;
+            float length = 0.0f;
+
+            Vector2f p1 = lerp(0.0f);
+            for (float t = dt; t <= 1.0f; t += dt) {
+                Vector2f p2 = lerp(t);
+                length += (p2.sub(p1, new Vector2f())).length();
+                p1 = p2;
+            }
+            lengthValue = length;
+        }
+
+        return lengthValue;
     }
 
     @Override

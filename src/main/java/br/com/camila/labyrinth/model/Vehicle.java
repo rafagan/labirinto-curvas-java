@@ -193,7 +193,16 @@ public class Vehicle implements IDrawable {
 
     public void update() {
         if(!stopped) {
-            currentT += Global.deltaTime / 2.0;
+            // O deslocamento é feito em velocidade constante e tempo variado
+//            float velocity = 100.0f;
+//            float offset = velocity * Global.deltaTime;
+//            currentT += offset / currentCurve.getBezier().length();
+
+            // O deslocamento é feito do ponto inicial ao final da curva em meio segundo
+            // O deslocamento é feito em tempo constante e velocidade variada
+            // deltaTime é um fragmento de segundo
+            float offset = Global.deltaTime * 0.5f;
+            currentT += offset;
         }
 
         if(nextCurve == null && shouldChooseCurve()) {
