@@ -63,13 +63,21 @@ public class Bezier3P implements IBezier {
         this.color = color;
     }
 
-    // Algoritmo de De Casteljau
-
     public Vector2f lerp(float t) {
         t = MathUtil.clamp(t, 0.0f, 1.0f);
-        p1.lerp(p2, t, l1);
-        p2.lerp(p3, t, l2);
-        l1.lerp(l2, t, p);
+
+        // Algoritmo de De Casteljau
+//        p1.lerp(p2, t, l1);
+//        p2.lerp(p3, t, l2);
+//        l1.lerp(l2, t, p);
+
+        // Bernstein Polynomial Form
+        float w1 = (float) Math.pow(1 - t, 2);
+        float w2 = 2 * (1 - t) * t;
+        float w3 = (float) Math.pow(t, 2);
+        p.x = w1 * p1.x + w2 * p2.x + w3 * p3.x;
+        p.y = w1 * p1.y + w2 * p2.y + w3 * p3.y;
+
         return new Vector2f(p);
     }
 

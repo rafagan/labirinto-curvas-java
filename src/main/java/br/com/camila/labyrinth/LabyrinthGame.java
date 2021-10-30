@@ -21,11 +21,11 @@ public class LabyrinthGame implements IGame {
     @Override
     public void init() {
         try {
-            // Labyrinth level = LabyrinthReader.readFromJson("src/main/resources/levels/level1.json");
-            Labyrinth level = LabyrinthReader.readFromTxtFiles(
-                    "src/main/resources/levels/level1_points.txt",
-                    "src/main/resources/levels/level1_curves.txt"
-            );
+             Labyrinth level = LabyrinthReader.readFromJson("src/main/resources/levels/level1.json");
+//            Labyrinth level = LabyrinthReader.readFromTxtFiles(
+//                    "src/main/resources/levels/level1_points.txt",
+//                    "src/main/resources/levels/level1_curves.txt"
+//            );
             for(LabyrinthCurve curve: level.getCurves()) {
                 LabyrinthPoint p1 = level.getPoints().get(curve.getP1());
                 LabyrinthPoint p2 = level.getPoints().get(curve.getP2());

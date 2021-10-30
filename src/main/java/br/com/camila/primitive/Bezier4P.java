@@ -78,12 +78,21 @@ public class Bezier4P implements IBezier {
     @Override
     public Vector2f lerp(float t) {
         t = MathUtil.clamp(t, 0.0f, 1.0f);
-        p1.lerp(p2, t, l1);
-        p2.lerp(p3, t, l2);
-        p3.lerp(p4, t, l3);
-        l1.lerp(l2, t, m1);
-        l2.lerp(l3, t, m2);
-        m1.lerp(m2, t, p);
+
+//        p1.lerp(p2, t, l1);
+//        p2.lerp(p3, t, l2);
+//        p3.lerp(p4, t, l3);
+//        l1.lerp(l2, t, m1);
+//        l2.lerp(l3, t, m2);
+//        m1.lerp(m2, t, p);
+
+        float w1 = (float) Math.pow(1 - t, 3);
+        float w2 = (float) (3 * t * Math.pow(1 - t, 2));
+        float w3 = (float) (3 * Math.pow(t, 2) * (1 - t));
+        float w4 = (float) Math.pow(t, 3);
+        p.x = w1 * p1.x + w2 * p2.x + w3 * p3.x + w4 * p4.x;
+        p.y = w1 * p1.y + w2 * p2.y + w3 * p3.y + w4 * p4.y;
+
         return new Vector2f(p);
     }
 
