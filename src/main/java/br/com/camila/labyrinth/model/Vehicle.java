@@ -2,6 +2,7 @@ package br.com.camila.labyrinth.model;
 
 import br.com.camila.game.Global;
 import br.com.camila.primitive.IDrawable;
+import br.com.camila.primitive.Polygon;
 import br.com.camila.primitive.Triangle;
 import br.com.camila.util.GlColor;
 import br.com.camila.window.KeyListener;
@@ -9,17 +10,16 @@ import org.joml.Vector2f;
 import org.lwjgl.opengl.GL11;
 
 import java.awt.*;
+import java.util.*;
 import java.util.List;
-import java.util.Objects;
-import java.util.Random;
 
 import static org.lwjgl.glfw.GLFW.*;
 
 public class Vehicle implements IDrawable {
-    private final int width = 20;
-    private final int height = 20;
+    private final int width = 100;
+    private final int height = 100;
 
-    private final Triangle triangle;
+    private final IDrawable shape;
     private LabyrinthCurve currentCurve;
     private LabyrinthCurve nextCurve;
     private int nextCurveIndex;
@@ -34,11 +34,32 @@ public class Vehicle implements IDrawable {
     private Vector2f position;
 
     public Vehicle(boolean isAI, boolean forward, LabyrinthCurve startCurve) {
-        triangle = new Triangle(
-                new Vector2f(0.5f * width, 0.0f * height),
-                new Vector2f(-0.5f * width, 0.5f * height),
-                new Vector2f(-0.5f * width, -0.5f * height)
-        );
+//        shape = new Triangle(
+//                new Vector2f(0.5f * width, 0.0f * height),
+//                new Vector2f(-0.5f * width, 0.5f * height),
+//                new Vector2f(-0.5f * width, -0.5f * height)
+//        );
+
+//        shape = new Polygon(Arrays.asList(
+//                new Vector2f(0.5f * width, 0.5f * height),
+//                new Vector2f(0.5f * width, -0.5f * height),
+//                new Vector2f(-0.5f * width, -0.5f * height),
+//                new Vector2f(-0.5f * width, 0.5f * height)
+//        ));
+
+        shape = new Polygon(Arrays.asList(
+                new Vector2f(0.0f * width,0.2f * height),
+                new Vector2f(0.1f * width,0.1f * height),
+                new Vector2f(0.2f * width,0.05f * height),
+                new Vector2f(0.1f * width,0.0f * height),
+                new Vector2f(0.2f * width, -0.1f * height),
+                new Vector2f(0.0f * width,0.0f * height),
+                new Vector2f(-0.2f * width, -0.1f * height),
+                new Vector2f(-0.1f * width,0.0f * height),
+                new Vector2f(-0.2f * width,0.05f * height),
+                new Vector2f(-0.1f * width,0.1f * height)
+        ));
+
         this.ai = isAI;
         this.forward = forward;
         color = new GlColor(isAI ? Color.red : Color.green);
@@ -224,7 +245,7 @@ public class Vehicle implements IDrawable {
         GL11.glPushMatrix();
         GL11.glTranslatef(position.x, position.y, 0.0f);
         GL11.glRotatef(angle, 0, 0, 1);
-        triangle.draw();
+        shape.draw();
         GL11.glPopMatrix();
 
         if(color != null) Global.defaultColor.glSet();

@@ -3,7 +3,6 @@ package br.com.camila.labyrinth.io;
 import br.com.camila.labyrinth.model.Labyrinth;
 import br.com.camila.labyrinth.model.LabyrinthCurve;
 import br.com.camila.labyrinth.model.LabyrinthPoint;
-import br.com.camila.math.MathUtil;
 import com.google.gson.Gson;
 import com.google.gson.stream.JsonReader;
 import org.joml.Vector2f;
