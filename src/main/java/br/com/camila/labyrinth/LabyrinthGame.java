@@ -9,14 +9,14 @@ import br.com.camila.labyrinth.model.LabyrinthPoint;
 import br.com.camila.labyrinth.model.Vehicle;
 import br.com.camila.primitive.*;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.*;
 
 public class LabyrinthGame implements IGame {
-    List<IBezier> curves = new ArrayList<>();
-    List<Vehicle> enemies = new ArrayList<>();
-    Vehicle player;
+    private final List<IBezier> curves = new ArrayList<>();
+    private final List<Vehicle> enemies = new ArrayList<>();
+    private Vehicle player;
+    private int skippedFrames = 0;
 
     @Override
     public void init() {
@@ -51,28 +51,28 @@ public class LabyrinthGame implements IGame {
                 curves.add(primitive);
             }
 
-            LabyrinthCurve curve = level.getCurves().get(
-                    new Random().nextInt(curves.size())
-            );
+            int index = new Random().nextInt(curves.size());
+            LabyrinthCurve curve = level.getCurves().get(index);
             player = new Vehicle(false, true, curve);
+            System.out.println("Curva escolhida pelo player:" + curve.getP1() + " " + curve.getP2() + " " + curve.getP3() + " " + curve.getP4());
 
-            Set<LabyrinthCurve> chooseCurves = new HashSet<>();
-            chooseCurves.add(curve);
+            Set<Integer> chooseCurves = new HashSet<>();
+            chooseCurves.add(index);
 
-            // TODO: Na versão com todas as curvas trocar para i < 10
-            for(int i = 0; i < 0; i++) {
+            for(int i = 0; i < 10; i++) {
+                if(chooseCurves.size() == level.getCurves().size()) break;
+
                 while(true) {
-                    if(chooseCurves.size() == enemies.size() - 1) break;
-                    if(chooseCurves.size() == level.getCurves().size()) break;
-
-                    curve = level.getCurves().get(new Random().nextInt(curves.size()));
-                    if(!chooseCurves.contains(curve)) {
-                        chooseCurves.add(curve);
+                    index = new Random().nextInt(curves.size());
+                    if(!chooseCurves.contains(index)) {
+                        curve = level.getCurves().get(index);
+                        chooseCurves.add(index);
                         break;
                     }
                 }
 
                 boolean forward = i < 5;
+                System.out.println("Curva escolhida pelo inimigo " + i + ": " + curve.getP1() + " " + curve.getP2() + " " + curve.getP3() + " " + curve.getP4());
                 enemies.add(new Vehicle(true, forward, curve));
             }
         } catch (IOException e) {
@@ -92,7 +92,7 @@ public class LabyrinthGame implements IGame {
         for(Vehicle enemy: enemies) {
             enemy.update();
 
-            if(player.hasCollision(enemy)) {
+            if(skippedFrames++ > 3 && player.hasCollision(enemy)) {
                 Global.gameOver = true;
             }
         }

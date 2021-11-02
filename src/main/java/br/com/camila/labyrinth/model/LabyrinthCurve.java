@@ -73,17 +73,4 @@ public class LabyrinthCurve {
     public void setBezier(IBezier bezier) {
         this.bezier = bezier;
     }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        LabyrinthCurve that = (LabyrinthCurve) o;
-        return p1 == that.p1 && p2 == that.p2 && p3 == that.p3 && Objects.equals(p4, that.p4);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(p1, p2, p3, p4);
-    }
 }

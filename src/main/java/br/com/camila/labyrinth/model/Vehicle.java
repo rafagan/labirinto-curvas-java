@@ -18,6 +18,7 @@ import static org.lwjgl.glfw.GLFW.*;
 public class Vehicle implements IDrawable {
     private final int width = 100;
     private final int height = 100;
+    private final boolean debugBoxCollider = true;
 
     private final IDrawable shape;
     private LabyrinthCurve currentCurve;
@@ -176,11 +177,11 @@ public class Vehicle implements IDrawable {
     }
 
     public Vector2f getMin() {
-        return new Vector2f(position.x + -0.5f * width, position.y + -0.5f * height);
+        return new Vector2f(position.x + -0.2f * width, position.y + -0.2f * height);
     }
 
     public Vector2f getMax() {
-        return new Vector2f(position.x + 0.5f * width, position.y + 0.5f * height);
+        return new Vector2f(position.x + 0.2f * width, position.y + 0.2f * height);
     }
 
     public boolean hasCollision(Vehicle vehicle) {
@@ -250,6 +251,15 @@ public class Vehicle implements IDrawable {
         Vector2f nextPosition = currentCurve.getBezier().lerp(t + (invertedT ? -0.0001f : 0.0001f));
         Vector2f direction = (nextPosition.sub(position, new Vector2f())).normalize();
         float angle = (float) (Math.atan2(direction.y, direction.x) / (2 * Math.PI) * 360.0f);
+
+        if(debugBoxCollider) {
+            GL11.glBegin(GL11.GL_LINE_LOOP);
+            GL11.glVertex2f(getMin().x, getMin().y);
+            GL11.glVertex2f(getMin().x, getMax().y);
+            GL11.glVertex2f(getMax().x, getMax().y);
+            GL11.glVertex2f(getMax().x, getMin().y);
+            GL11.glEnd();
+        }
 
         GL11.glPushMatrix();
         GL11.glTranslatef(position.x, position.y, 0.0f);
