@@ -5,7 +5,7 @@ plugins {
     id 'application'
 }
 
-group 'br.com.camila'
+group 'br.com.app'
 version '0.0.1'
 
 // The game will support only Windows x64 and MacOS
@@ -39,4 +39,4 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.8'
 }
 
-mainClassName = 'br.com.camila.Application'
+mainClassName = 'br.com.app.Application'
