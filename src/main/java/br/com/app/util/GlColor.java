@@ -22,10 +22,10 @@ public class GlColor {
     }
 
     public GlColor(int red, int green, int blue, int alpha) {
-        color.x = red;
-        color.y = green;
-        color.z = blue;
-        color.w = alpha;
+        color.x = red / 255.0f;
+        color.y = green / 255.0f;
+        color.z = blue / 255.0f;
+        color.w = alpha / 255.0f;
     }
 
     public float red() {
